@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.psl.mapper.ArticleMapper">
+    <insert id="add" parameterType="com.psl.pojo.Article">
+        insert into tb_article(title, content,
+        <if test="coverImg != null and coverImg != ''">
+            cover_img,
+        </if>
+        <if test="state != null and state != ''">
+            state,
+        </if>
+        category_id, create_user, create_time, update_time) values(#{title},#{content},#{coverImg},
+        <if test="state != null and state != ''">
+            #{state},
+        </if>
+        #{categoryId},#{createUser},#{createTime},#{updateTime})
+    </insert>
+
+    <select id="list">
+        select * from tb_article
+        <where>
+            <if test="categoryId != null">
+                category_id = #{categoryId}
+            </if>
+            <if test="state != null">
+                and state =#{state}
+            </if>
+        </where>
+    </select>
+
+    <update id="update" parameterType="com.psl.pojo.Article">
+        update tb_article
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="coverImg != null and coverImg != ''">
+                cover_img = #{coverImg},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+            <if test="categoryId != null and categoryId != ''">
+                category_id = #{categoryId}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>
